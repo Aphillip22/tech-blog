@@ -37,23 +37,21 @@ const sess = {
 };
 
 // path for static files
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // proclaim handlebars as template engine
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// parse and string JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// handle session using express-session
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session(sess));
 
-// declare path to routes
-app.use(routes);
+// use routes in controllers directory
+app.use(require('./controllers'));
 
-// initialize server and create db
+// turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log('Now listening'));
-  });
+    app.listen(PORT, () => console.log(`Now listening!`));
+});
