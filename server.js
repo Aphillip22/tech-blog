@@ -21,20 +21,20 @@ const helpers = require('./utils/helpers');
 // Initialize handlebars
 const hbs = exphbs.create({ helpers });
 
-// Initialize sessions
-const sess = {
-    secret: process.env.DB_SESSION_SECRET,
-    cookie: { maxAge: 7200000 },
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({
-      db: sequelize
-    })
-  };
-
 // Initialize the server
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Initialize sessions
+const sess = {
+  secret: 'Shh its a secret',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+      db: sequelize
+  })
+};
 
 // path for static files
 app.use(express.static(path.join(__dirname, 'public')));
