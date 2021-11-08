@@ -1,0 +1,21 @@
+<!--call single post partial-->
+{{> post-info post}}
+
+{{#if loggedIn}}
+<!--include ability to comment on posts if logged in-->
+<form class="comment-form">
+  <div>
+    <textarea name="comment-body"></textarea>
+  </div>
+
+  <div>
+    <button type="submit">Add Comment</button>
+  </div>
+</form>
+{{/if}}
+<!--show comments associated with post only, if not logged in-->
+{{> comments post.comments}}
+
+{{#if loggedIn}}
+<script src="/javascript/comment.js"></script>
+{{/if}}

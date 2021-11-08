@@ -1,0 +1,28 @@
+<article>
+  <a href="/dashboard"> &larr; Take me back to my dashboard!</a>
+  <h2>
+    Update Account
+  </h2>
+  <form class="edit-user-form">
+    <div>
+      <label for="user-name">Username</label>
+      <input name="user-name" type="text" value="{{user.username}}" />
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input name="email" value="{{user.email}}" />
+    </div>
+     <div>
+      <label for="password">Password</label>
+      <!--leave password field blank-->         
+      <input type="password" name="password" />
+    </div>
+    <div>
+        <!--hide user id value-->
+      <input type="hidden" id="user-id" name="user-id" value={{user.id}} />
+    </div>   
+    <button type="submit">Update!</button>
+  </form>
+</article>
+
+<script src="/javascript/edit-user.js"></script>

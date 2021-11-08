@@ -1,0 +1,43 @@
+<section class="row">
+  <div class = "column">
+      <!--create new post-->
+    <h2>Create New Post</h2>
+
+    <form class="new-post-form">
+      <div>
+        <label for="post-title">Title</label>
+        <input type="text" id="post-title" name="post-title" />
+      </div>
+      <div>
+        <label for="post-text">Description</label>
+        <textarea id="post-text" name="post-text"></textarea>
+      </div>
+      <button type="submit" class="btn">Create</button>
+    </form>
+  </div>
+  <div class = "column">
+      <!--include user details-->
+    <h2>User Info</h2>
+    {{> user-info}}
+  </div>
+
+</section>
+
+<!--if 1 or more posts, display section-->
+{{#if posts.length}}
+<section>
+  <h2>My Posts</h2>
+  <ol>
+    {{#each posts as |post|}}
+    <li>
+      {{> post-info post}}
+      <!--add link to edit post with each listed post using api route to edit by post id-->
+      <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
+    </li>
+    {{/each}}
+  </ol>
+</section>
+{{/if}}
+
+
+<script src="/javascript/add-post.js"></script>

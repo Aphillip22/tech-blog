@@ -1,0 +1,8 @@
+<ul class="post-list">
+    <!--call each post to populate list-->
+  {{#each posts as |post|}}
+  <li>
+    {{> post-info post }}
+  </li>
+  {{/each}}
+</ul>
