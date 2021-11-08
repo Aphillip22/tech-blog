@@ -17,9 +17,11 @@
   # Test
   undefined
   # Technologies
-  HTML,CSS,JavaScript,SQL
+  HTML, CSS , JavaScript, SQL, handlebars, sequelize, mysql2, bcrypt, express, express-session
   # Contact
   For any questions or to discuss this project further, please reach out at amber.rain.phillips@gmail.com or Aphillip22
   # Links
   Heroku: https://mod14-tech-blog.herokuapp.com/
-  Github Repo: 
+  Github Repo: https://github.com/Aphillip22/tech-blog.git
+  # Screenshot
+  ![image](https://user-images.githubusercontent.com/87291933/140764151-642e6e82-9bac-42ca-a22b-38e53b9473c7.png)
