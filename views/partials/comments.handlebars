@@ -1,0 +1,15 @@
+<!--display comments with posts-->
+<div class="comments">
+    {{#each this}}
+    <section class="comment">
+        <div class="meta">
+            <!--include username and date comment created-->
+            {{user.username}} on {{format_date created_at}}
+        </div>
+        <!--display comment text-->
+        <div class="text">
+            {{comment_body}}
+        </div>
+    </section>
+    {{/each}}
+</div>

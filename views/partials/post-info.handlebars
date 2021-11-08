@@ -1,0 +1,14 @@
+<article class="post">
+    <!--display post title-->
+    <div class="title">
+        <!--include username and date post created-->
+        <span><a href="/post/{{id}}">{{title}}</a></span><span style="float:right">Posted by {{user.username}} on
+            {{format_date created_at}}</span><br>
+            <!--include link to all comments using plural helper-->
+        <span style="float:right">{{comments.length}} {{format_plural "comment" comments.length}}</span>
+    </div>
+    <!--display post body-->
+    <div class="content">
+        <p>{{post_body}}</p>
+    </div>
+</article>
