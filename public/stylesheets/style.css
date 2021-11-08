@@ -1,0 +1,48 @@
+/* reviewed JD Rowley's css styling for assistance https://github.com/JD-Rowley/mvc-tech-blog.git */
+
+:root {
+    --primary: #365194;
+    --secondary: #7587B4;
+    --tertiary: #253354;
+    --light: #F2F3F4;
+}
+* {
+    font-family: Arial;
+    box-sizing: border-box;
+    color: white;
+}
+body {
+    background-color: var(--light);
+}
+header {
+    background-color: var(--primary);
+}
+.page-content {
+    height: 100%;
+    width: 100%;
+    margin-top: 50px;
+}
+.form {
+    max-width: 500px;
+    vertical-align: middle;
+    margin: auto;
+}
+.card-header,
+.card-footer {
+    background-color: var(--secondary);
+}
+li {
+    color: black;
+}
+.btn-main {
+    background-color: var(--tertiary);
+    color: white;
+}
+.btn-main:hover {
+    background-color: var(--secondary);
+}
+.post-main,
+.comment-main {
+    padding: 0 16px;
+    white-space: pre-wrap;
+}
