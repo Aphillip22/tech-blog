@@ -1,11 +1,11 @@
 //include dependencies
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
-const session = require('express-session');
+// const session = require('express-session');
 // Authorization Helper
-const withAuth = require('../../utils/auth');
+// const withAuth = require('../../utils/auth');
 // SequelizeStore to validate and save user session
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
+// const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 // access all user data
 router.get('/', (req, res) => {
@@ -120,7 +120,7 @@ router.post('/login',  (req, res) => {
 });
 
 // Log out route
-router.post('/logout', withAuth, (req, res) => {
+router.post('/logout', (req, res) => {
   if (req.session.loggedIn) {
       //end session after validation and display reroute message
     req.session.destroy(() => {
@@ -133,7 +133,7 @@ router.post('/logout', withAuth, (req, res) => {
 })
 
 // update user data
-router.put('/:id', withAuth, (req, res) => {
+router.put('/:id', (req, res) => {
     // find user by id and define reqs with req.body as reqs match model exactly
     User.update(req.body, {
         // call pw hash hook
@@ -159,7 +159,7 @@ router.put('/:id', withAuth, (req, res) => {
   })
 
 // delete user
-router.delete('/:id', withAuth, (req, res) => {
+router.delete('/:id', (req, res) => {
     // validate by id and then destroy
     User.destroy({
       where: {

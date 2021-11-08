@@ -1,7 +1,7 @@
 //include dependencies
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
-const sequelize = require('../../config/connection');
+// const sequelize = require('../../config/connection');
 // Authorization Helper
 const withAuth = require('../../utils/auth');
 
@@ -10,8 +10,8 @@ router.get('/', (req, res) => {
     Post.findAll({
         attributes: [
             'id',
-            'post_body',
             'title',
+            'post_body',
             'created_at',
           ],
         // Order the posts from most recent to oldest
@@ -19,17 +19,17 @@ router.get('/', (req, res) => {
         //include username and all comments associated to post id
         include: [
             {
-                model: User,
-                attributes: ['username']
-            },
-            {
                 model: Comment,
                 attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
                 include: {
                     model: User,
                     attributes: ['username']
                 }
-            }
+            },
+            {
+              model: User,
+              attributes: ['username']
+          }
         ]
     })
     // return all posts
@@ -49,15 +49,11 @@ router.get('/:id', (req, res) => {
       },
       attributes: [
         'id',
-        'post_body',
         'title',
+        'post_body',
         'created_at',
       ],
       include: [
-        {
-          model: User,
-          attributes: ['username']
-        },
         {
             model: Comment,
             attributes: ['id', 'comment_body', 'post_id', 'user_id', 'created_at'],
@@ -65,6 +61,10 @@ router.get('/:id', (req, res) => {
                 model: User,
                 attributes: ['username']
             }
+        },
+        {
+          model: User,
+          attributes: ['username']
         }
       ]
     })
@@ -89,7 +89,7 @@ router.post('/', withAuth, (req, res) => {
     // define fieldnames required
     Post.create({
         title: req.body.title,
-        post_text: req.body.post_body,
+        post_body: req.body.post_body,
         user_id: req.session.user_id
     })
     //push data to database
@@ -103,7 +103,11 @@ router.post('/', withAuth, (req, res) => {
 
 //update post body or title by id
 router.put('/:id', withAuth, (req, res) => {
-    Post.update(req.body,
+    Post.update(
+        {
+          title: req.body.title,
+          post_body: req.body.post_body
+        }, 
         {
             where: {
                 id: req.params.id
