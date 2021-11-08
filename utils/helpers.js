@@ -11,5 +11,12 @@ module.exports = {
       }
   
       return word;
+    },
+    format_time: (time) => {
+      return `${new Date(time).toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          timeZone: 'America/Boise'
+      })}`;
     }
   }
