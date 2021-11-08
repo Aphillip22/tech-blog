@@ -1,16 +1,14 @@
 //include dependencies
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
-// const session = require('express-session');
-// Authorization Helper
-// const withAuth = require('../../utils/auth');
-// SequelizeStore to validate and save user session
-// const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const session = require('express-session');
+const withAuth = require('../../utils/auth');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// access all user data
+//get all users
 router.get('/', (req, res) => {
     User.findAll({
-        // do not return password data with user data
+        // do not show pw
         attributes: { exclude: ['password'] }
     })
       // JSON format
@@ -22,15 +20,15 @@ router.get('/', (req, res) => {
       });
   });
 
-// find user by id
+// get user by id
 router.get('/:id', (req, res) => {
     User.findOne({
-      // do not include pw data
+      // exclude pw from display
       attributes: { exclude: ['password'] },
       where: {
         id: req.params.id
       },
-      // include posts user has created or commented on
+      // include posts and comments by user
       include: [
         {
           model: Post,
@@ -47,30 +45,29 @@ router.get('/:id', (req, res) => {
       ]
     })
       .then(dbUserData => {
-          // return error if no user is found with id requested
         if (!dbUserData) {
-          res.status(404).json({ message: 'No user found with this id' });
+          // return error if user does not exist
+          res.status(404).json({ message: 'The user does not exist in our records!' });
           return;
         }
-        // return data for user if id exists
+        // if user exists, return data
         res.json(dbUserData);
       })
-      // catch server errors and exit function
+        // catch server error and exit function
       .catch(err => {
         console.log(err);
         res.status(500).json(err);
       });
   });
 
-// add user
+// new user
 router.post('/', (req, res) => {
-  // define required fieldnames
   User.create({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password
   })
-    // display data for user confirmation and save session
+    // confirm by displaying data and store
     .then(dbUserData => {
       req.session.save(() => {
         req.session.user_id = dbUserData.id;
@@ -80,78 +77,73 @@ router.post('/', (req, res) => {
         res.json(dbUserData);
       });
     })
-    // catch server errors and exit function
+    //catch server error and exit function
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
 });
 
-// user login
+// login
 router.post('/login',  (req, res) => {
-    // find user by email
+  //find user by email
     User.findOne({
         where: {
         email: req.body.email
         }
-    })
-    //return error if no user exists with email requested
-    .then(dbUserData => {
+    }).then(dbUserData => {
+        // return error if email does not exist
         if (!dbUserData) {
-        res.status(400).json({ message: 'No user exists with this email!' });
+        res.status(400).json({ message: 'No user registered with that email!' });
         return;
         }
-        // verify user by pw
+        // verify user
         const validPassword = dbUserData.checkPassword(req.body.password);
-        // return error for invalid pw
+        // if pw incorrect, return error
         if (!validPassword) {
             res.status(400).json({ message: 'Invalid credentials!' });
             return;
         }
-        // save session and display confirmation
+        // if successful, display success message and redirect
         req.session.save(() => {
+          // declare session variables
           req.session.user_id = dbUserData.id;
           req.session.username = dbUserData.username;
           req.session.loggedIn = true;
     
-          res.json({ user: dbUserData, message: 'Login successful!' });
+          res.json({ user: dbUserData, message: 'Thanks for logging in!' });
         });
     });  
 });
 
-// Log out route
-router.post('/logout', (req, res) => {
+// logout user
+router.post('/logout', withAuth, (req, res) => {
   if (req.session.loggedIn) {
-      //end session after validation and display reroute message
     req.session.destroy(() => {
       res.status(204).end();
     });
   } else {
-      //return error route does not exist
     res.status(404).end();
   }
 })
 
-// update user data
-router.put('/:id', (req, res) => {
-    // find user by id and define reqs with req.body as reqs match model exactly
+// update user
+router.put('/:id', withAuth, (req, res) => {
     User.update(req.body, {
-        // call pw hash hook
+        // find hook for pw hashing
         individualHooks: true,
+        // find user by id
         where: {
             id: req.params.id
         }
     })
-    // return error if no user exists with id requested
       .then(dbUserData => {
         if (!dbUserData[0]) {
-          res.status(404).json({ message: 'No user found with this id' });
+          res.status(404).json({ message: 'This user does not exist in our records!' });
           return;
         }
-        //return data if id exists
         res.json(dbUserData);
       })
-      //catch server errors and exit function
       .catch(err => {
         console.log(err);
         res.status(500).json(err);
@@ -159,23 +151,20 @@ router.put('/:id', (req, res) => {
   })
 
 // delete user
-router.delete('/:id', (req, res) => {
-    // validate by id and then destroy
+router.delete('/:id', withAuth, (req, res) => {
     User.destroy({
       where: {
+        //find user by id
         id: req.params.id
       }
     })
-    // return error if no user exists with id requested
       .then(dbUserData => {
         if (!dbUserData) {
-          res.status(404).json({ message: 'No user found with this id' });
+          res.status(404).json({ message: 'It looks like this user does not exist in our records!' });
           return;
         }
-        //return data if user id exists
         res.json(dbUserData);
       })
-      //catch server errors and exit function
       .catch(err => {
         console.log(err);
         res.status(500).json(err);
