@@ -2,9 +2,9 @@ const { Post } = require('../models');
 
 const postData = [
   {
-    title: 'mySQL',
-    post_body: 'MySQL is an open-source relational database management system (RDBMS). Its name is a combination of My, the name of co-founder Michael Widenius daughter, and SQL, the abbreviation for Structured Query Language.',
     user_id: 1,
+    title: 'mySQL',
+    post_body: 'MySQL is an open-source relational database management system (RDBMS). Its name is a combination of My, the name of co-founder Michael Widenius daughter, and SQL, the abbreviation for Structured Query Language.', 
   },
   {
     title: 'Creating Databases',
