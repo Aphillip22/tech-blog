@@ -7,8 +7,8 @@ const host = 'us-cdbr-east-02.cleardb.com'
 require('dotenv').config();
 
 // create connection to database
-const sequelize = process.env.JAWSDB_URL
-  ? new Sequelize(process.env.JAWSDB_URL)
+const sequelize = !process.env.JAWSDB_URL
+  ? new Sequelize('mysql://b14991b282fc47:7e3e65e5@us-cdbr-east-04.cleardb.com/heroku_033f2d7fd825089?reconnect=true')
   : new Sequelize(uri, username, pw, {
       host: host,
       dialect: 'mysql',
