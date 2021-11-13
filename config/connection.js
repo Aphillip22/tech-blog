@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const uri = 'heroku_033f2d7fd825089';
 const username = 'b14991b282fc47';
 const pw = '7e3e65e5';
-const host = 'http://us-cdbr-east-02.cleardb.com/'
+const host = 'us-cdbr-east-02.cleardb.com/'
 require('dotenv').config();
 
 // create connection to database
