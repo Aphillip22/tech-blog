@@ -1,6 +1,6 @@
 // import Sequelize constructor from library
 const Sequelize = require('sequelize');
-
+const host = 'heroku_033f2d7fd825089';
 require('dotenv').config();
 
 // create connection to database
@@ -11,6 +11,6 @@ const sequelize = process.env.CLEARDB_DATABASE_URL
       dialect: 'mysql',
       port: 3306
     });
-
+   
 
 module.exports = sequelize;
